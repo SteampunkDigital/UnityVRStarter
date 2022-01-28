@@ -17,15 +17,14 @@ Try out this scene:
 
 ### Assets/Scenes/MRTK Hand Interaction Examples.unity
 This scene demonstrates a bunch of the MRTK hand interactions, and gives a good starting point of seeing what's possible with the included piano, buttons, sliders, and other interactive components.
-
-![MRTK Hand Interaction](ReadmeFiles/MRTK Hand Interactions.jpg)
+![MRTK Hand Interaction](ReadmeFiles/MRTKHandInteractions.jpg)
 
 ## MRTK Profiles
 In your own scene, use the MRTK Configuration Profile:
 `Oculus MixedRealityToolkitConfigurationProfile`
 
 ![Mixed Reality Toolkit Dialog](ReadmeFiles/MixedRealityToolkit.png)
-![MRTK Profile List](ReadmeFiles/MRTK Profiles.png)
+![MRTK Profile List](ReadmeFiles/MRTKProfiles.png)
 
 This profile is configured to use Hand Tracking and Camera Passthrough.
 
