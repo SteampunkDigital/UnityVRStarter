@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MRTK Hand Interaction Examples.unity
+    guid: 2a287c047d50846aa9ee68eb0123bf59
+  - enabled: 0
     path: Assets/Scenes/MRTK Passthru Hands.unity
     guid: fd962a20850e2421893a56fbe206e103
   - enabled: 0
