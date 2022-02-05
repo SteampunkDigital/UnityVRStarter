@@ -12,6 +12,16 @@
     <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="false" />
     <meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only" />
     <meta-data android:name="com.oculus.supportedDevices" android:value="quest|quest2" />
+    <meta-data android:name="com.oculus.handtracking.frequency" android:value="HIGH" />
   </application>
   <uses-feature android:name="android.hardware.vr.headtracking" android:version="1" android:required="true" />
+  <uses-feature android:name="oculus.software.handtracking" android:required="false" />
+  <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
+  <uses-feature android:name="com.oculus.experimental.enabled" android:required="true" />
+  <uses-permission android:name="com.oculus.permission.USE_ANCHOR_API" />
+  <uses-feature android:name="com.oculus.feature.PASSTHROUGH" android:required="true" />
+  <uses-feature android:name="com.oculus.feature.RENDER_MODEL" />
+  <uses-permission android:name="com.oculus.permission.RENDER_MODEL" />
+  <uses-feature android:name="oculus.software.trackedkeyboard" android:required="false" />
+  <uses-permission android:name="com.oculus.permission.TRACKED_KEYBOARD" />
 </manifest>

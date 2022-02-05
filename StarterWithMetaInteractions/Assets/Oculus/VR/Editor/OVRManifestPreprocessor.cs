@@ -330,6 +330,52 @@ public class OVRManifestPreprocessor
 				modifyIfFound,
 				"value", ColorSpaceToManifestTag(runtimeSettings.colorSpace));
 		}
+
+		//============================================================================
+		// Render Model
+		OVRProjectConfig.RenderModelSupport renderModelSupport = OVRProjectConfig.GetProjectConfig().renderModelSupport;
+		bool renderModelEntryNeeded = OVRDeviceSelector.isTargetDeviceQuestFamily && (renderModelSupport == OVRProjectConfig.RenderModelSupport.Enabled);
+
+		AddOrRemoveTag(doc,
+			androidNamespaceURI,
+			"/manifest",
+			"uses-feature",
+			"com.oculus.feature.RENDER_MODEL",
+			renderModelEntryNeeded,
+			modifyIfFound);
+		AddOrRemoveTag(doc,
+			androidNamespaceURI,
+			"/manifest",
+			"uses-permission",
+			"com.oculus.permission.RENDER_MODEL",
+			renderModelEntryNeeded,
+			modifyIfFound);
+
+		//============================================================================
+		// Tracked Keyboard
+		// If Quest is the target device, add the tracked keyboard manifest tags if needed
+		// Mapping of project setting to manifest setting:
+		// OVRProjectConfig.TrackedKeyboardSupport.None => manifest entry not present
+		// OVRProjectConfig.TrackedKeyboardSupport.Supported => manifest entry present and required=false
+		// OVRProjectConfig.TrackedKeyboardSupport.Required => manifest entry present and required=true
+		OVRProjectConfig.TrackedKeyboardSupport targetTrackedKeyboardSupport = OVRProjectConfig.GetProjectConfig().trackedKeyboardSupport;
+		bool trackedKeyboardEntryNeeded = OVRDeviceSelector.isTargetDeviceQuestFamily && (targetTrackedKeyboardSupport != OVRProjectConfig.TrackedKeyboardSupport.None);
+		
+		AddOrRemoveTag(doc,
+			androidNamespaceURI,
+			"/manifest",
+			"uses-feature",
+			"oculus.software.trackedkeyboard",
+			trackedKeyboardEntryNeeded,
+			modifyIfFound,
+			"required", (targetTrackedKeyboardSupport == OVRProjectConfig.TrackedKeyboardSupport.Required) ? "true" : "false");
+		AddOrRemoveTag(doc,
+			androidNamespaceURI,
+			"/manifest",
+			"uses-permission",
+			"com.oculus.permission.TRACKED_KEYBOARD",
+			trackedKeyboardEntryNeeded,
+		modifyIfFound);
 	}
 
 

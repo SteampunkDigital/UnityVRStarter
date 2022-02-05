@@ -276,6 +276,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	/// </summary>
 	public static event Action<UInt64, bool, OVRPlugin.SpatialEntityUuid, OVRPlugin.SpatialEntityStorageLocation> SpatialEntityStorageErase;
 
+
 	/// <summary>
 	/// Occurs when Health & Safety Warning is dismissed.
 	/// </summary>
@@ -1286,6 +1287,11 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	[Tooltip("If true, rendered controller latency is reduced by several ms, as the left/right controllers will have their positions updated right before rendering.")]
 	public bool LateControllerUpdate = true;
 
+#if UNITY_2020_3_OR_NEWER
+	[Tooltip("Late latching is a feature that can reduce rendered head/controller latency by a substantial amount. Before enabling, be sure to go over the documentation to ensure that the feature is used correctly. This feature must also be enabled through the Oculus XR Plugin settings.")]
+	public bool LateLatching = false;
+#endif
+
 	/// <summary>
 	/// True if the current platform supports virtual reality.
 	/// </summary>
@@ -1985,14 +1991,6 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 #endif
 
 		UpdateInsightPassthrough(isInsightPassthroughEnabled);
-
-		if (m_SpaceWarpEnabled && m_AppSpaceTransform != null)
-		{
-#if USING_XR_SDK
-			OculusXRPlugin.SetAppSpacePosition(m_AppSpaceTransform.position.x, m_AppSpaceTransform.position.y, m_AppSpaceTransform.position.z);
-			OculusXRPlugin.SetAppSpaceRotation(m_AppSpaceTransform.rotation.x, m_AppSpaceTransform.rotation.y, m_AppSpaceTransform.rotation.z, m_AppSpaceTransform.rotation.w);
-#endif
-		}
 	}
 
 	private void UpdateHMDEvents()
@@ -2154,6 +2152,14 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	private void LateUpdate()
 	{
 		OVRHaptics.Process();
+
+		if (m_SpaceWarpEnabled && m_AppSpaceTransform != null)
+		{
+#if USING_XR_SDK
+			OculusXRPlugin.SetAppSpacePosition(m_AppSpaceTransform.position.x, m_AppSpaceTransform.position.y, m_AppSpaceTransform.position.z);
+			OculusXRPlugin.SetAppSpaceRotation(m_AppSpaceTransform.rotation.x, m_AppSpaceTransform.rotation.y, m_AppSpaceTransform.rotation.z, m_AppSpaceTransform.rotation.w);
+#endif
+		}
 	}
 
 	private void FixedUpdate()
@@ -2454,13 +2460,20 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
         }
 	}
 
+	/// Checks whether the passthrough is initialized.
+	/// \return Boolean value to indicate the current state of passthrough. If the value returned is true, the passthrough is initialized.
 	public static bool IsInsightPassthroughInitialized() {
 		return _passthroughInitializationState == PassthroughInitializationState.Initialized;
 	}
 
+	/// Checks whether the passthrough has failed the initialization.
+	/// \return Boolean value to indicate the passthrough initialization failed status. If the value returned is true, the passthrough has failed the initialization.
 	public static bool HasInsightPassthroughInitFailed() {
 		return _passthroughInitializationState == PassthroughInitializationState.Failed;
 	}
+
+	/// Checks whether the passthrough is in the process of initialization.
+	/// \return Boolean value to indicate the current state of passthrough. If the value returned is true, the passthrough is initializing.
     public static bool IsInsightPassthroughInitPending()
     {
         return _passthroughInitializationState == PassthroughInitializationState.Pending;

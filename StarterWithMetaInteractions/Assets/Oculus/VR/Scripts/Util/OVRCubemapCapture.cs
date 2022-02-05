@@ -67,11 +67,14 @@ public class OVRCubemapCapture : MonoBehaviour
 			}
 		}
 
+		//todo: enable for Unity Input System
+#if ENABLE_LEGACY_INPUT_MANAGER
 		// Trigger by press triggeredByKey
 		if ( Input.GetKeyDown( triggeredByKey ) )
 		{
 			TriggerCubemapCapture(transform.position, cubemapSize, pathName);
 		}
+#endif
 	}
 
 	/// <summary>

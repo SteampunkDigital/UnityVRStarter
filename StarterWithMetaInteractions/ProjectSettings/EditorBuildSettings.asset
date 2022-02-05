@@ -6,15 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MRTK Hand Interaction Examples.unity
-    guid: 2a287c047d50846aa9ee68eb0123bf59
-  - enabled: 0
-    path: Assets/Scenes/MRTK Passthru Hands.unity
-    guid: fd962a20850e2421893a56fbe206e103
+    path: Assets/Scenes/Interaction with Passthru Hands.unity
+    guid: d9a9dd1427b374cdfacefdf3f9f71029
   - enabled: 0
     path: Assets/Scenes/OpenXR Passthru Hands.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 40b73c8f295d04deda7f2436372acd0d, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: cb0f9c676cb84408aa491c814c53845d, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a442d5be1a1d042b38e0331a47dbdcc0, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 889ae408ac4894c19938c44aab8922c0, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 245f09c7026b4f741be5ffd35489562c, type: 2}

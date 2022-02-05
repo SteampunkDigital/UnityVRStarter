@@ -849,15 +849,21 @@ namespace UnityEngine.EventSystems
         /// <returns></returns>
         virtual protected PointerEventData.FramePressState GetGazeButtonState()
         {
-            var pressed = Input.GetKeyDown(gazeClickKey) || OVRInput.GetDown(joyPadClickButton);
+			//todo: enable for Unity Input System
+#if ENABLE_LEGACY_INPUT_MANAGER
+			var pressed = Input.GetKeyDown(gazeClickKey) || OVRInput.GetDown(joyPadClickButton);
             var released = Input.GetKeyUp(gazeClickKey) || OVRInput.GetUp(joyPadClickButton);
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             pressed |= Input.GetMouseButtonDown(0);
             released |= Input.GetMouseButtonUp(0);
 #endif
+#else
+			var pressed = OVRInput.GetDown(joyPadClickButton);
+			var released = OVRInput.GetUp(joyPadClickButton);
+#endif
 
-            if (pressed && released)
+			if (pressed && released)
                 return PointerEventData.FramePressState.PressedAndReleased;
             if (pressed)
                 return PointerEventData.FramePressState.Pressed;

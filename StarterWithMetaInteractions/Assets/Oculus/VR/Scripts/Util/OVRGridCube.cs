@@ -58,6 +58,8 @@ public class OVRGridCube : MonoBehaviour
 
 	void UpdateCubeGrid()
 	{
+		//todo: enable for Unity Input System
+#if ENABLE_LEGACY_INPUT_MANAGER
 		// Toggle the grid cube display on 'G'
 		if(Input.GetKeyDown(GridKey))
 		{
@@ -79,8 +81,9 @@ public class OVRGridCube : MonoBehaviour
 					CubeGrid.SetActive(false);
 			}
 		}
+#endif
 
-		if(CubeGrid != null)
+		if (CubeGrid != null)
 		{
 			// Set cube colors to let user know if camera is tracking
 			CubeSwitchColor = !OVRManager.tracker.isPositionTracked;

@@ -455,7 +455,7 @@ class OVRPluginUpdater
 			{
 				// display a dialog to prompt developer to confirm if they want to proceed with OpenXR backend
 				int result = EditorUtility.DisplayDialogComplex("OpenXR Backend",
-					"OpenXR is now fully supported by Oculus. However, some of the functionalities are not supported in the baseline OpenXR spec, which would be provided in our future releases.\n\nIf you depend on the following features in your project, please click Cancel to continue using the legacy backend:\n\n  1. Advanced hand tracking features (collision capsule, input metadata, Thumb0, default handmesh)\n  2. Mixed Reality Capture on Rift\n\nNew features, such as Passthrough API, are only supported through the OpenXR backend.\n\nPlease check our release notes for more details.\n\nReminder: you can switch the legacy and OpenXR backends at any time from Oculus > Tools > OpenXR menu options.", "Use OpenXR", "Cancel", "Release Notes");
+					"OpenXR is now fully supported by Oculus. However, some of the functionalities are not supported in the baseline OpenXR spec, which would be provided in our future releases.\n\nIf you depend on the following features in your project, please click Cancel to continue using the legacy backend:\n\n  * Mixed Reality Capture on Rift\n\nNew features, such as Passthrough API, are only supported through the OpenXR backend.\n\nPlease check our release notes for more details.\n\nReminder: you can switch the legacy and OpenXR backends at any time from Oculus > Tools > OpenXR menu options.", "Use OpenXR", "Cancel", "Release Notes");
 				if (result == 0)
 					break;
 				else if (result == 1)

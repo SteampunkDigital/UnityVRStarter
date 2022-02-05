@@ -253,6 +253,13 @@ public class OVRGLTFLoader
 			}
 		}
 
+		string nodeName = node["name"].ToString();
+		if (nodeName.Contains("batteryIndicator"))
+		{
+			GameObject.Destroy(m_Nodes[nodeId]);
+			return;
+		}
+
 		if (node["mesh"] != null)
 		{
 			var meshId = node["mesh"].AsInt;

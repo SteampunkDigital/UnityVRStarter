@@ -22,6 +22,7 @@ public class OVRBundleTool : EditorWindow
 	private static GUIStyle logBoxStyle;
 	private static GUIStyle statusStyle;
 	private static Vector2 logBoxSize;
+	private static Vector2 sceneScrollViewPos;
 
 	private bool forceRestart = false;
 	private bool showBundleManagement = false;
@@ -252,14 +253,17 @@ public class OVRBundleTool : EditorWindow
 			EditorGUILayout.LabelField(deployLabelTxt, GUI.skin.box, GUILayout.Width(60));
 			EditorGUILayout.EndHorizontal();
 
+			int scrollViewHeight = Math.Min(buildableScenes.Count * 21, 200);
+			sceneScrollViewPos = EditorGUILayout.BeginScrollView(sceneScrollViewPos, GUILayout.MaxHeight(scrollViewHeight));
 			foreach (EditorSceneInfo scene in buildableScenes)
 			{
 				EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField(scene.sceneName, GUILayout.Width(sceneNameWidth + 8));
 				EditorGUILayout.LabelField(GetEnumDescription(scene.buildStatus), GUILayout.Width(80));
-				scene.shouldDeploy = EditorGUILayout.Toggle(scene.shouldDeploy, GUILayout.Width(50));
+				scene.shouldDeploy = EditorGUILayout.Toggle(scene.shouldDeploy, GUILayout.Width(30));
 				EditorGUILayout.EndHorizontal();
 			}
+			EditorGUILayout.EndScrollView();
 
 			EditorGUILayout.BeginHorizontal();
 			{

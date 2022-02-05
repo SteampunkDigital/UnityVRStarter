@@ -60,6 +60,7 @@ public class OVROverlay : MonoBehaviour
 		ReconstructionPassthrough = OVRPlugin.OverlayShape.ReconstructionPassthrough,
 		SurfaceProjectedPassthrough = OVRPlugin.OverlayShape.SurfaceProjectedPassthrough,
 		Fisheye = OVRPlugin.OverlayShape.Fisheye,
+		KeyboardHandsPassthrough = OVRPlugin.OverlayShape.KeyboardHandsPassthrough,
 	}
 
 	/// <summary>
@@ -829,6 +830,7 @@ public class OVROverlay : MonoBehaviour
 	public static bool IsPassthroughShape(OverlayShape shape)
 	{
 		return shape == OverlayShape.ReconstructionPassthrough
+			|| shape == OverlayShape.KeyboardHandsPassthrough
 			|| shape == OverlayShape.SurfaceProjectedPassthrough;
 	}
 
