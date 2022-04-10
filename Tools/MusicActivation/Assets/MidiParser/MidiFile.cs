@@ -9,7 +9,8 @@ namespace MidiParser
         public readonly int Format;
 
         public readonly int TicksPerQuarterNote;
-        public readonly double SecondsPerTick;
+        public int usPerQuarter = 500000; // Equivalent to 120 BPM
+        double SecondsPerTick => (double)usPerQuarter / (double)TicksPerQuarterNote / 1000000.0;
 
         public readonly MidiTrack[] Tracks;
 
@@ -73,15 +74,12 @@ namespace MidiParser
             // secondsPerTick = usPerTick / 1,000,000
             // seconds = ticks * secondsPerTick
 
-            int usPerQuarter = 500000; // Equivalent to 120 BPM
-            double usPerTick = (double)usPerQuarter / TicksPerQuarterNote;
-            double secondsPerTick = usPerTick / 1000000.0;
             double seconds=0;
 
             while (position < trackEnd)
             {
                 var deltaTicks = Reader.ReadVarInt(data, ref position);
-                seconds += secondsPerTick * deltaTicks;
+                seconds += SecondsPerTick * deltaTicks;
 
                 var peekByte = data[position];
 
