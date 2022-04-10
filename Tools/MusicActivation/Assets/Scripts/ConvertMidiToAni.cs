@@ -3,10 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using MidiParser;
 
+public enum ConverterAnimationType {
+    Scale
+}
+
 public class ConvertMidiToAni : MonoBehaviour
 {
     public string midiFilePath;
-    public string aniOutputFilename;
+    public AnimationClip clip;
+
+    [TooltipAttribute("Convert this note's values to the animation clip, -1 to ignore")]
+    [Range(-1, 127)]
+    public int Note = -1;
+
+    [TooltipAttribute("Convert this controller values to the animation clip, -1 to ignore")]
+    [Range(-1, 127)]
+    public int Controller = -1;
+
+    [TooltipAttribute("Animation clip's track name")]
+    public string AnimationTrackPath = "";
+
+    [TooltipAttribute("Animation target value type")]
+    public ConverterAnimationType _AnimationType = ConverterAnimationType.Scale;
 
     void Start()
     {
@@ -15,7 +33,8 @@ public class ConvertMidiToAni : MonoBehaviour
         var midiFile = new MidiFile(fullMidiFilePath);
         
         // Create Streaming Assets path with aniOutputFilename.
-        string aniOutputPath = Application.streamingAssetsPath + "/" + aniOutputFilename;
+        // string aniOutputPath = Application.streamingAssetsPath + "/" + aniOutputFilename;
+        List<Keyframe> keys = new List<Keyframe>();
 
         // Iterate over all the tracks in the midi file.
         foreach (var track in midiFile.Tracks)
@@ -34,21 +53,27 @@ public class ConvertMidiToAni : MonoBehaviour
                 var typeName = type.ToString();
                 switch(type) {
                     case MidiEventType.NoteOn:
+                    case MidiEventType.KeyAfterTouch:
                     case MidiEventType.NoteOff:
                     {
                         var noteEvent = (MidiNoteEvent)eventData;
-                        Debug.Log(string.Format("{0} {1} ch:{2} n:{3} vel:{4}", time, typeName, noteEvent.Channel, noteEvent.Note, noteEvent.Velocity));
+                        if( noteEvent.Note == Note ) {
+                            var key = new Keyframe((float)noteEvent.Time, noteEvent.Velocity/127f);
+                            keys.Add(key);
+                        }
+                        // Debug.Log(string.Format("{0} {1} ch:{2} n:{3} vel:{4}", time, typeName, noteEvent.Channel, noteEvent.Note, noteEvent.Velocity));
                         break;
                     }
                     // case MidiEventType.PitchBendChange:
                     //     Debug.Log(string.Format("{0} {1} ch:{2} {3}-{4}", time, typeName, arg1, arg2, arg3));
                     //     break;
-                    // case MidiEventType.KeyAfterTouch:
-                    //     Debug.Log(string.Format("{0} {1} ch:{2} n:{3} amt:{4}", time, typeName, arg1, arg2, arg3));
-                    //     break;
                     case MidiEventType.ControlChange: {
                         var controlEvent = (MidiControlChangeEvent)eventData;
-                        Debug.Log(string.Format("{0} {1} ch:{2} controller:{3} val:{4}", time, typeName, controlEvent.Channel, controlEvent.Controller, controlEvent.Value));
+                        if( controlEvent.Controller == Controller ) {
+                            var key = new Keyframe((float)controlEvent.Time, controlEvent.Value/127f);
+                            keys.Add(key);
+                        }
+                        // Debug.Log(string.Format("{0} {1} ch:{2} controller:{3} val:{4}", time, typeName, controlEvent.Channel, controlEvent.Controller, controlEvent.Value));
                     }   break;
                     // case MidiEventType.ProgramChange:
                     //     Debug.Log(string.Format("{0} {1} ch:{2} prog:{3}", time, typeName, arg1, arg2));
@@ -93,6 +118,13 @@ public class ConvertMidiToAni : MonoBehaviour
             // // Add the animation clip to the animation.
             // GetComponent<Animation>().AddClip(aniClip, track.Name);
         }
+
+        AnimationCurve curveX = new AnimationCurve(keys.ToArray());
+        AnimationCurve curveY = new AnimationCurve(keys.ToArray());
+        AnimationCurve curveZ = new AnimationCurve(keys.ToArray());
+        clip.SetCurve(AnimationTrackPath, typeof(Transform), "m_LocalScale.x", curveX);
+        clip.SetCurve(AnimationTrackPath, typeof(Transform), "m_LocalScale.y", curveY);
+        clip.SetCurve(AnimationTrackPath, typeof(Transform), "m_LocalScale.z", curveZ);
     }
 
     // Update is called once per frame

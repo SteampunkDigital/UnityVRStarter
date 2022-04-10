@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using UnityEngine;
 
 namespace MidiParser
 {
@@ -109,15 +110,14 @@ namespace MidiParser
                     }
 
                     MidiEvent midiEvent = null;
+                    // Debug.Log(string.Format("{0} {1} ch:{2}", seconds, ((MidiEventType)eventType).ToString(), channel));
                     switch( eventType ) {
                     case (byte)MidiEventType.NoteOn:
-                        midiEvent = new MidiNoteEvent( deltaTicks, seconds, MidiEventType.NoteOn, channel, (int)data1, true, (int)data2);
+                    case (byte)MidiEventType.KeyAfterTouch:
+                        midiEvent = new MidiNoteEvent( deltaTicks, seconds, (MidiEventType)eventType, channel, (int)data1, true, (int)data2);
                         break;
                     case (byte)MidiEventType.NoteOff:
                         midiEvent = new MidiNoteEvent( deltaTicks, seconds, MidiEventType.NoteOff, channel, (int)data1, false, (int)data2);
-                        break;
-
-                    case (byte)MidiEventType.KeyAfterTouch:
                         break;
                     
                     case (byte)MidiEventType.ControlChange:
@@ -128,9 +128,6 @@ namespace MidiParser
                     if( midiEvent != null ) {
                         track.MidiEvents.Add( midiEvent );
                     }
-
-                    // track.MidiEvents.Add(
-                    //     new MidiEvent { Ticks = ticks, Time = seconds, Type = eventType, Arg1 = channel, Arg2 = data1, Arg3 = data2 });
                 }
                 else
                 {
