@@ -158,7 +158,8 @@ MonoBehaviour:
   Note: 60
   Controller: -1
   AnimationTrackPath: Note60
-  _AnimationType: 2
+  _AnimationType: 0
+  _CurveType: 0
 --- !u!4 &433504533
 Transform:
   m_ObjectHideFlags: 0

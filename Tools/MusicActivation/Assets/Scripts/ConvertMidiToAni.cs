@@ -7,6 +7,12 @@ public enum ConverterAnimationType {
     Scale
 }
 
+public enum ConverterCurveType {
+    Constant,
+    Smooth,
+}
+
+
 public class ConvertMidiToAni : MonoBehaviour
 {
     public string midiFilePath;
@@ -25,6 +31,9 @@ public class ConvertMidiToAni : MonoBehaviour
 
     [TooltipAttribute("Animation target value type")]
     public ConverterAnimationType _AnimationType = ConverterAnimationType.Scale;
+
+    [TooltipAttribute("Animation curve type")]
+    public ConverterCurveType _CurveType = ConverterCurveType.Smooth;
 
     void Start()
     {
@@ -58,7 +67,17 @@ public class ConvertMidiToAni : MonoBehaviour
                     {
                         var noteEvent = (MidiNoteEvent)eventData;
                         if( noteEvent.Note == Note ) {
-                            var key = new Keyframe((float)noteEvent.Time, noteEvent.Velocity/127f);
+                            Keyframe key = new Keyframe((float)noteEvent.Time, noteEvent.Velocity/127f);
+                            switch(_CurveType) {
+                                case ConverterCurveType.Constant:
+                                    key.inTangent = float.NegativeInfinity;
+                                    key.outTangent = float.PositiveInfinity;
+                                    break;
+                                case ConverterCurveType.Smooth:
+                                    key.inTangent = 0;
+                                    key.outTangent = 0;
+                                    break;
+                            }
                             keys.Add(key);
                         }
                         // Debug.Log(string.Format("{0} {1} ch:{2} n:{3} vel:{4}", time, typeName, noteEvent.Channel, noteEvent.Note, noteEvent.Velocity));
