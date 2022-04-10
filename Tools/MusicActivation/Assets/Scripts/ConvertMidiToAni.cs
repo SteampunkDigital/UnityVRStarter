@@ -29,48 +29,52 @@ public class ConvertMidiToAni : MonoBehaviour
             foreach (var eventData in track.MidiEvents)
             {
                 // Convert event to strings.
-                var ticks = eventData.Ticks;
-                var type = eventData.MidiEventType;
-                var arg1 = eventData.Arg1;
-                var arg2 = eventData.Arg2;
-                var arg3 = eventData.Arg3;
-
+                var type = eventData._MidiEventType;
+                var time = eventData.Time;
                 var typeName = type.ToString();
                 switch(type) {
                     case MidiEventType.NoteOn:
                     case MidiEventType.NoteOff:
-                        Debug.Log(string.Format("{0} {1} ch:{2} n:{3} vel:{4}", ticks, typeName, arg1, arg2, arg3));
+                    {
+                        var noteEvent = (MidiNoteEvent)eventData;
+                        Debug.Log(string.Format("{0} {1} ch:{2} n:{3} vel:{4}", time, typeName, noteEvent.Channel, noteEvent.Note, noteEvent.Velocity));
                         break;
-                    case MidiEventType.PitchBendChange:
-                        Debug.Log(string.Format("{0} {1} ch:{2} {3}-{4}", ticks, typeName, arg1, arg2, arg3));
-                        break;
-                    case MidiEventType.KeyAfterTouch:
-                        Debug.Log(string.Format("{0} {1} ch:{2} n:{3} amt:{4}", ticks, typeName, arg1, arg2, arg3));
-                        break;
+                    }
+                    // case MidiEventType.PitchBendChange:
+                    //     Debug.Log(string.Format("{0} {1} ch:{2} {3}-{4}", time, typeName, arg1, arg2, arg3));
+                    //     break;
+                    // case MidiEventType.KeyAfterTouch:
+                    //     Debug.Log(string.Format("{0} {1} ch:{2} n:{3} amt:{4}", time, typeName, arg1, arg2, arg3));
+                    //     break;
                     case MidiEventType.ControlChange: {
-                        var controlChangeType = eventData.ControlChangeType;
-                        var controlChangeName = controlChangeType.ToString();
-                        Debug.Log(string.Format("{0} {1} ch:{2} controller:{3} val:{4}", ticks, typeName, arg1, controlChangeName, arg3));
+                        var controlEvent = (MidiControlChangeEvent)eventData;
+                        Debug.Log(string.Format("{0} {1} ch:{2} controller:{3} val:{4}", time, typeName, controlEvent.Channel, controlEvent.Controller, controlEvent.Value));
                     }   break;
-                    case MidiEventType.ProgramChange:
-                        Debug.Log(string.Format("{0} {1} ch:{2} prog:{3}", ticks, typeName, arg1, arg2));
-                        break;
-                    case MidiEventType.ChannelAfterTouch:
-                        Debug.Log(string.Format("{0} {1} ch:{2} amt:{3}", ticks, typeName, arg1, arg2));
-                        break;
+                    // case MidiEventType.ProgramChange:
+                    //     Debug.Log(string.Format("{0} {1} ch:{2} prog:{3}", time, typeName, arg1, arg2));
+                    //     break;
+                    // case MidiEventType.ChannelAfterTouch:
+                    //     Debug.Log(string.Format("{0} {1} ch:{2} amt:{3}", time, typeName, arg1, arg2));
+                    //     break;
                     case MidiEventType.MetaEvent: {
-                        var metaEventType = eventData.MetaEventType;
-                        var metaEventName = metaEventType.ToString();
-                        switch(metaEventType) {
-                            case MetaEventType.Tempo:
-                                Debug.Log(string.Format("{0} {1} {2} bpm:{3}", ticks, typeName, metaEventName, arg2));
+                        var metaEvent = (MetaEvent)eventData;
+                        var metaEventName = metaEvent._MetaEventType.ToString();
+                        switch(metaEvent._MetaEventType) {
+                            case MetaEventType.Tempo: {
+                                var tempoEvent = (MetaTempoEvent)metaEvent;
+                                Debug.Log(string.Format("{0} {1} {2} bpm:{3}", time, typeName, metaEventName, tempoEvent.BPM));
                                 break;
-                            case MetaEventType.TimeSignature:
-                                Debug.Log(string.Format("{0} {1} {2} {3}/{4}", ticks, typeName, metaEventName, arg2, arg3));
+                            }
+                            case MetaEventType.TimeSignature: {
+                                var timeSignatureEvent = (MetaTimeSignatureEvent)metaEvent;
+                                Debug.Log(string.Format("{0} {1} {2} {3}/{4} {5} {6}", time, typeName, metaEventName, timeSignatureEvent.Numerator, timeSignatureEvent.Denominator, timeSignatureEvent.Metronome, timeSignatureEvent.ThirtySeconds));
                                 break;
-                            case MetaEventType.KeySignature:
-                                Debug.Log(string.Format("{0} {1} {2} {3} {4}", ticks, typeName, metaEventName, arg2, arg3));
+                            }
+                            case MetaEventType.KeySignature: {
+                                var keySignatureEvent = (MetaKeySignatureEvent)metaEvent;
+                                Debug.Log(string.Format("{0} {1} {2} {3} {4}", time, typeName, metaEventName, keySignatureEvent.Key, keySignatureEvent.Scale));
                                 break;
+                            }
                         }
                     } break;
                 }
