@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "com.unity.ide.vscode": "1.2.4",
+    "com.unity.ide.vscode": "1.2.5",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.4.8",
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.management": "4.2.1",
-    "com.unity.xr.oculus": "1.11.2",
+    "com.unity.xr.oculus": "1.12.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
