@@ -38,7 +38,8 @@ public class ConvertMidiToAni : MonoBehaviour
     void Start()
     {
         // Get whole midiFilePath from StreamingAssets folder
-        string fullMidiFilePath = Application.streamingAssetsPath + "/" + this.midiFilePath;
+        string saPath = Application.streamingAssetsPath;
+        string fullMidiFilePath = saPath + "/" + this.midiFilePath;
         var midiFile = new MidiFile(fullMidiFilePath);
         
         // Create Streaming Assets path with aniOutputFilename.

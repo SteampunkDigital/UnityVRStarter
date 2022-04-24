@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace MidiParser
 {
     public enum MetaEventType : byte
@@ -27,6 +29,8 @@ namespace MidiParser
             : base(deltaTicks, time, MetaEventType.Tempo)
         {
             Tempo = tempo;
+
+            Debug.Log( $"Tempo BPM: {this.BPM}");
         }
 
         public double BPM => 60000000.0 / Tempo;
@@ -46,6 +50,7 @@ namespace MidiParser
             Denominator = denominator;
             Metronome = metronome;
             ThirtySeconds = thirtySeconds;
+            Debug.Log( $"Time Sig: {Numerator}/{Denominator} {Metronome}:{ThirtySeconds}");
         }
     }
 
